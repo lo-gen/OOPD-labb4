@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Scania extends Car implements ITruckBed, ITruck {
+public class Scania extends Truck implements ITruckBed, ITruck {
 
     private int rampAngle = 0;
 
@@ -39,6 +39,15 @@ public class Scania extends Car implements ITruckBed, ITruck {
             throw new IllegalStateException("Ramp is all the way up");
         }
     }
+
+    public void rampUp() {
+        rampUp(70);
+    }
+
+    public void rampDown() {
+        rampDown(70);
+    }
+
 
     @Override public double speedFactor(){
         return getEnginePower() * 0.001;

@@ -134,7 +134,7 @@ public abstract class Car implements IMovable, ICar{
 
     @Override
     public void move() {
-        if (!isStored) {
+        if (isStored) {
             throw new IllegalStateException("Can't move while stored");
         } else {
             xPos += currentSpeed * Math.cos(positionAngle);

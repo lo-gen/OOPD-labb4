@@ -16,10 +16,14 @@ public class Saab95 extends Car implements IPassagerCar{
 
     protected void setTurboOn(){
 	    turboOn = true;
+        throw new IllegalStateException("Turbo is on");
+
     }
 
     protected void setTurboOff(){
 	    turboOn = false;
+        throw new IllegalStateException("Turbo is off");
+
     }
     
     @Override public double speedFactor(){

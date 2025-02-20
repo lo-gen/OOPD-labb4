@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.util.ArrayList;
 
-public class CarTransport<carType extends IPassagerCar> extends Car implements ITruck{
+public class CarTransport<carType extends IPassagerCar> extends Truck implements ITruck{
     private StorageUnit<carType> storage;
     private boolean rampUp;
 
