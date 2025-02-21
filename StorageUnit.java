@@ -9,6 +9,8 @@ public class StorageUnit<storageType>{
         this.totalSpace = totalSpace;
     }
 
+
+
     protected int getSpaceUsed(){
         return storage.size();
     }

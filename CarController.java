@@ -15,8 +15,6 @@ public class CarController {
 
     Car volvo1 = new Volvo240();
 
-    Car volvo2 = new Volvo240();
-
     Car Saab1 = new Saab95();
 
     Car Scania1 = new Scania();
@@ -42,12 +40,24 @@ public class CarController {
         // Instance of this class
         CarController cc = new CarController();
 
-        cc.cars.add(new Saab95());
+        double startY = 0;
 
-        cc.cars.add(new Scania());
+        Volvo240 volvo = new Volvo240();
+        volvo.setXYPos(0, startY);
+        cc.cars.add(volvo);
+
+        Saab95 saab = new Saab95();
+        saab.setXYPos(0, startY + 100);
+        cc.cars.add(saab);
+
+        Scania scania = new Scania();
+        scania.setXYPos(0, startY + 200);
+        cc.cars.add(scania);
+
+        Garage<Volvo240> volvoWorkshop = new Garage<Volvo240>(10, 300, 0);
 
 
-        cc.cars.add(new Volvo240());
+
 
 
         // Start a new view and send a reference of self
@@ -67,14 +77,15 @@ public class CarController {
         public void actionPerformed(ActionEvent e) {
             for (Car car : cars) {
                 car.move();
-                int x = (int) Math.round(car.getXPos());
-                int y = (int) Math.round(car.getYPos());
-                if (x >= Screen.getX) {
-                    frame.drawPanel.moveit(Screen.getX, y);
+                int x = (int) car.getXPos();
+                int y = (int) car.getYPos();
+
+                if(0 > x || x >= dim.width/2 -80) {
+                    car.setAngle(car.getAngle() + Math.PI);
                 }
-                else {
-                    frame.drawPanel.moveit(x, y);
-                }
+
+                frame.drawPanel.moveit(x, y, car);
+
 
                 // repaint() calls the paintComponent method of the panel
                 frame.drawPanel.repaint();
@@ -139,4 +150,5 @@ public class CarController {
             }
         }
     }
+
 }

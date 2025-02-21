@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 // This panel represents the animated part of the view with the car images.
 
@@ -12,31 +14,60 @@ public class DrawPanel extends JPanel{
 
     // Just a single image, TODO: Generalize
 
+    private HashMap<Car, Point> carPositions = new HashMap<>();
+    private HashMap<Garage<Volvo240>, Point>  garagePositions = new HashMap<>();
 
     BufferedImage volvoImage;
+    BufferedImage saabImage;
+    BufferedImage scaniaImage;
+
+    BufferedImage getcarImage(Car car) {
+        if (car instanceof Volvo240) {
+            return volvoImage;
+        } else if (car instanceof Saab95) {
+            return saabImage;
+        } else if (car instanceof Scania) {
+            return scaniaImage;
+        }
+        return null;
+    }
+    /*
+    BufferedImage getCarImage(Car car){
+        switch(car instanceof ) {
+            case x:
+                // code block
+                break;
+            case y:
+                // code block
+                break;
+            default:
+                // code block
+        }
+    }
+    */
 
 
     // To keep track of a single car's position
-    Point volvoPoint = new Point();
 
-    // Scrren dimensions
-    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
 
     BufferedImage volvoWorkshopImage;
-    Point volvoWorkshopPoint = new Point(300,300);
+    Point volvoWorkshopPoint = new Point(300,0);
 
     // TODO: Make this general for all cars
-    void moveit(int x, int y){
-        volvoPoint.x = x;
-        volvoPoint.y = y;
+    void moveit(int x, int y, Car car) {
+        if (carPositions.containsKey(car)) {
+            carPositions.get(car).setLocation(x, y);
+        } else {
+            carPositions.put(car, new Point(x, y));
+        }
     }
 
     // Initializes the panel and reads the images
     public DrawPanel(int x, int y) {
         this.setDoubleBuffered(true);
         this.setPreferredSize(new Dimension(x, y));
-        this.setBackground(Color.green);
+        this.setBackground(Color.cyan);
         // Print an error message in case file is not found with a try/catch block
         try {
             // You can remove the "pics" part if running outside of IntelliJ and
@@ -47,8 +78,8 @@ public class DrawPanel extends JPanel{
             // if you are starting in IntelliJ.
             volvoImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Volvo240.jpg"));
             volvoWorkshopImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/VolvoBrand.jpg"));
-            //saabImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Saab95.jpg"));
-           // scaniaImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Scania.jpg"));
+            saabImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Saab95.jpg"));
+            scaniaImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Scania.jpg"));
 
            // allImages = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/*.jpg"));
 
@@ -65,7 +96,30 @@ public class DrawPanel extends JPanel{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(volvoImage, volvoPoint.x, volvoPoint.y, null); // see javadoc for more info on the parameters
+
+        ArrayList<Car> carsToRemove = new ArrayList<>();
+
+        for (Car car : carPositions.keySet()) {
+            Point carPos = carPositions.get(car);
+            BufferedImage carImage = getcarImage(car);
+            if (car instanceof  Volvo240) {
+                for (Garage<Volvo240> garage : garagePositions.keySet()) {
+                    Point garagePos = garagePositions.get(garage);
+                        if (Math.abs(carPos.x - garagePos.x) < 10 || Math.abs(carPos.x - garagePos.y) < 10) {
+                            garage.addCar((Volvo240) car);
+                            carsToRemove.add(car);
+                            car.stopEngine();
+                            // Inte klar ännu
+                    }
+                }
+            }
+            if (!carsToRemove.contains(car) && carImage != null) {
+                g.drawImage(carImage, carPos.x, carPos.y, null);
+            }
+        }
+        for (Car car : carsToRemove) {
+            carPositions.remove(car);
+        }
         g.drawImage(volvoWorkshopImage, volvoWorkshopPoint.x, volvoWorkshopPoint.y, null);
 
     }

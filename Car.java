@@ -132,6 +132,10 @@ public abstract class Car implements IMovable, ICar{
         return positionAngle;
     }
 
+    //public double collisionAngle(){
+    //
+   // }
+
     @Override
     public void move() {
         if (isStored) {
