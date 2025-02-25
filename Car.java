@@ -88,6 +88,9 @@ public abstract class Car implements IMovable, ICar{
     public void gas(double amount){
         if (isStored) {
             throw new IllegalStateException("Can't drive while stored");
+        }
+        if (getCurrentSpeed()== 0) {
+            return ;
         } else {
             amount = Math.min(1, Math.max(0, amount));  //Math.clamp(0, 1, amount)
             incrementSpeed(amount);

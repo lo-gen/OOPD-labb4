@@ -1,7 +1,5 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -50,9 +48,21 @@ public class DrawPanel extends JPanel{
     // To keep track of a single car's position
 
 
-
     BufferedImage volvoWorkshopImage;
     Point volvoWorkshopPoint = new Point(300,0);
+
+
+    void addGarage(Garage<Volvo240> garage) {
+        if (garagePositions.containsKey(garage)) {
+            garagePositions.get(garage);
+        } else {
+            garagePositions.put(garage, new Point(300, 0));
+        }
+    }
+
+
+
+
 
     // TODO: Make this general for all cars
     void moveit(int x, int y, Car car) {
@@ -104,13 +114,13 @@ public class DrawPanel extends JPanel{
             BufferedImage carImage = getcarImage(car);
             if (car instanceof  Volvo240) {
                 for (Garage<Volvo240> garage : garagePositions.keySet()) {
-                    Point garagePos = garagePositions.get(garage);
-                        if (Math.abs(carPos.x - garagePos.x) < 10 || Math.abs(carPos.x - garagePos.y) < 10) {
-                            garage.addCar((Volvo240) car);
-                            carsToRemove.add(car);
-                            car.stopEngine();
-                            // Inte klar ännu
+                    if (Math.abs(garage.getXPos() - car.getXPos()) < 10) {
+                        garage.addCar((Volvo240) car);
+                        carsToRemove.add(car);
+                        car.stopEngine();
                     }
+                    // Inte klar ännu
+
                 }
             }
             if (!carsToRemove.contains(car) && carImage != null) {

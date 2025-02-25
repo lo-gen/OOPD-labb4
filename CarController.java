@@ -29,6 +29,7 @@ public class CarController {
     CarView frame;
     // A list of cars, modify if needed
     ArrayList<Car> cars = new ArrayList<>();
+    ArrayList<Garage<Volvo240>> garages = new ArrayList<>();
 
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -54,7 +55,8 @@ public class CarController {
         scania.setXYPos(0, startY + 200);
         cc.cars.add(scania);
 
-        Garage<Volvo240> volvoWorkshop = new Garage<Volvo240>(10, 300, 0);
+        Garage<Volvo240> volvoWorkshop = new Garage<>(10, 300, 0);
+        cc.garages.add(volvoWorkshop);
 
 
 
@@ -82,6 +84,13 @@ public class CarController {
 
                 if(0 > x || x >= dim.width/2 -80) {
                     car.setAngle(car.getAngle() + Math.PI);
+                }
+
+                /*if (Math.abs(garages.getFirst().getXPos() - car.getXPos()) < 10) {
+                    car.stopEngine();
+                }*/
+                for (Garage<Volvo240> garage : garages) {
+                    frame.drawPanel.addGarage(garage);
                 }
 
                 frame.drawPanel.moveit(x, y, car);
