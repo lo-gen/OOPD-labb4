@@ -49,14 +49,13 @@ public class DrawPanel extends JPanel{
 
 
     BufferedImage volvoWorkshopImage;
-    Point volvoWorkshopPoint = new Point(300,0);
 
 
-    void addGarage(Garage<Volvo240> garage) {
+    void addGarage(Garage<Volvo240> garage, int x, int y) {
         if (garagePositions.containsKey(garage)) {
             garagePositions.get(garage);
         } else {
-            garagePositions.put(garage, new Point(300, 0));
+            garagePositions.put(garage, new Point(x, y));
         }
     }
 
@@ -114,11 +113,11 @@ public class DrawPanel extends JPanel{
             BufferedImage carImage = getcarImage(car);
             if (car instanceof  Volvo240) {
                 for (Garage<Volvo240> garage : garagePositions.keySet()) {
-                    if (Math.abs(garage.getXPos() - car.getXPos()) < 10) {
+                    if (Math.abs(garage.getXPos() - car.getXPos()) < 10 && Math.abs(garage.getYPos() - car.getYPos()) < 10) {
                         garage.addCar((Volvo240) car);
                         carsToRemove.add(car);
-                        car.stopEngine();
                     }
+                    g.drawImage(volvoWorkshopImage, (int) garage.getXPos(), (int) garage.getYPos(), null);
                     // Inte klar ännu
 
                 }
@@ -130,7 +129,6 @@ public class DrawPanel extends JPanel{
         for (Car car : carsToRemove) {
             carPositions.remove(car);
         }
-        g.drawImage(volvoWorkshopImage, volvoWorkshopPoint.x, volvoWorkshopPoint.y, null);
 
     }
 }

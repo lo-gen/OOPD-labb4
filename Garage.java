@@ -1,8 +1,7 @@
 import java.util.ArrayList;
 
-public class Garage<carType extends IPassagerCar> {
+public class Garage<carType extends ICar> {
     private final StorageUnit<carType> myGarage;
-    private ArrayList<carType> storedCars;
     private final double xPos;
     private final double yPos;
 
@@ -33,18 +32,14 @@ public class Garage<carType extends IPassagerCar> {
     }
 
     protected void addCar(carType car) {
-        if (2 < distanceBetween(car)) {
+        if (10 < distanceBetween(car)) {
             throw new IllegalStateException("Car is too far away");
         } else {
             myGarage.addItem(car);
         }
     }
 
-    /*
-    protected void addCar(carType car){
-        myGarage.addItem(car);
-    }
-    **/
+
 
 
     protected void removeItem(carType car) {

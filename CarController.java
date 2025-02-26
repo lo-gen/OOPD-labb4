@@ -55,7 +55,7 @@ public class CarController {
         scania.setXYPos(0, startY + 200);
         cc.cars.add(scania);
 
-        Garage<Volvo240> volvoWorkshop = new Garage<>(10, 300, 0);
+        Garage<Volvo240> volvoWorkshop = new Garage<>(10, 300, 300);
         cc.garages.add(volvoWorkshop);
 
 
@@ -86,11 +86,15 @@ public class CarController {
                     car.setAngle(car.getAngle() + Math.PI);
                 }
 
+                if (0 > y || y >= dim.height / 2 - 50) {
+                    car.setAngle(Math.atan2(-Math.sin(car.getAngle()), Math.cos(car.getAngle())));
+                }
+
                 /*if (Math.abs(garages.getFirst().getXPos() - car.getXPos()) < 10) {
                     car.stopEngine();
                 }*/
                 for (Garage<Volvo240> garage : garages) {
-                    frame.drawPanel.addGarage(garage);
+                    frame.drawPanel.addGarage(garage, (int) garage.getXPos(), (int) (garage.getYPos()));
                 }
 
                 frame.drawPanel.moveit(x, y, car);
