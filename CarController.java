@@ -10,7 +10,7 @@ import java.util.ArrayList;
 * modifying the model state and the updating the view.
  */
 
-public class CarController {
+public class CarController implements IObserver{
     // member fields:
 
     Car volvo1 = new Volvo240();
@@ -55,7 +55,7 @@ public class CarController {
         scania.setXYPos(0, startY + 200);
         cc.cars.add(scania);
 
-        Garage<Volvo240> volvoWorkshop = new Garage<>(10, 300, 300);
+        Garage<Volvo240> volvoWorkshop = new Garage<>(10, 300, 0);
         cc.garages.add(volvoWorkshop);
 
 
@@ -68,6 +68,10 @@ public class CarController {
         // Start the timer
         cc.timer.start();
 
+    }
+
+    public void Update(){
+        
     }
 
 

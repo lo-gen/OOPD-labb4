@@ -116,6 +116,7 @@ public class DrawPanel extends JPanel{
                     if (Math.abs(garage.getXPos() - car.getXPos()) < 10 && Math.abs(garage.getYPos() - car.getYPos()) < 10) {
                         garage.addCar((Volvo240) car);
                         carsToRemove.add(car);
+                        car.stopEngine();
                     }
                     g.drawImage(volvoWorkshopImage, (int) garage.getXPos(), (int) garage.getYPos(), null);
                     // Inte klar ännu
