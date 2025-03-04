@@ -17,6 +17,8 @@ import java.util.ArrayList;
 public class CarView extends JFrame implements IObserver{
     private static final int X = 800;
     private static final int Y = 800;
+    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
 
     // The controller member
     CarController carC;
@@ -48,7 +50,24 @@ public class CarView extends JFrame implements IObserver{
 
 
     public void Update() {
+        for (Car car : carC.cars){
+            car.move();
+            int x = (int) car.getXPos();
+            int y = (int) car.getYPos();
 
+            if(0 > x || x >= dim.width/2 -80) {
+                car.setAngle(car.getAngle() + Math.PI);
+            }
+
+            if (0 > y || y >= dim.height / 2 - 50) {
+                car.setAngle(Math.atan2(-Math.sin(car.getAngle()), Math.cos(car.getAngle())));
+            }
+            for (Garage<Volvo240> garage : carC.garages) {
+                drawPanel.addGarage(garage, (int) garage.getXPos(), (int) (garage.getYPos()));
+            }
+
+            drawPanel.moveit(x, y, car);
+        }
         drawPanel.repaint();
     }
 

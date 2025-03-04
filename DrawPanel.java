@@ -5,6 +5,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 // This panel represents the animated part of the view with the car images.
 
@@ -14,6 +16,8 @@ public class DrawPanel extends JPanel{
 
     private HashMap<Car, Point> carPositions = new HashMap<>();
     private HashMap<Garage<Volvo240>, Point>  garagePositions = new HashMap<>();
+
+    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
     BufferedImage volvoImage;
     BufferedImage saabImage;
@@ -61,8 +65,6 @@ public class DrawPanel extends JPanel{
 
 
 
-
-
     // TODO: Make this general for all cars
     void moveit(int x, int y, Car car) {
         if (carPositions.containsKey(car)) {
@@ -106,12 +108,13 @@ public class DrawPanel extends JPanel{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+
         ArrayList<Car> carsToRemove = new ArrayList<>();
 
         for (Car car : carPositions.keySet()) {
             Point carPos = carPositions.get(car);
             BufferedImage carImage = getcarImage(car);
-            if (car instanceof  Volvo240) {
+            if (car instanceof Volvo240) {
                 for (Garage<Volvo240> garage : garagePositions.keySet()) {
                     if (Math.abs(garage.getXPos() - car.getXPos()) < 10 && Math.abs(garage.getYPos() - car.getYPos()) < 10) {
                         garage.addCar((Volvo240) car);
@@ -129,7 +132,8 @@ public class DrawPanel extends JPanel{
         }
         for (Car car : carsToRemove) {
             carPositions.remove(car);
+            }
+
         }
 
-    }
 }

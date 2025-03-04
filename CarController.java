@@ -106,22 +106,18 @@ public class CarController implements ISubject{
     * */
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            for (Car car : cars) {
-                car.move();
-                int x = (int) car.getXPos();
-                int y = (int) car.getYPos();
+            notifyObserver();
 
+                /*
                 if(0 > x || x >= dim.width/2 -80) {
                     car.setAngle(car.getAngle() + Math.PI);
                 }
 
                 if (0 > y || y >= dim.height / 2 - 50) {
-                    car.setAngle(Math.atan2(-Math.sin(car.getAngle()), Math.cos(car.getAngle())));
+                    car.setAngle(Math.tan2(-Math.sin(car.getAngle()), Math.cos(car.getAngle())));
                 }
 
-                /*if (Math.abs(garages.getFirst().getXPos() - car.getXPos()) < 10) {
-                    car.stopEngine();
-                }*/
+
                 for (Garage<Volvo240> garage : garages) {
                     frame.drawPanel.addGarage(garage, (int) garage.getXPos(), (int) (garage.getYPos()));
                 }
@@ -131,7 +127,8 @@ public class CarController implements ISubject{
 
                 // repaint() calls the paintComponent method of the panel
                 notifyObserver();
-            }
+
+            }*/
         }
     }
 
