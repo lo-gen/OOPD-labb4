@@ -10,7 +10,7 @@ import java.util.ArrayList;
 * modifying the model state and the updating the view.
  */
 
-public class CarController implements IObserver{
+public class CarController implements ISubject{
     // member fields:
 
     Car volvo1 = new Volvo240();
@@ -30,6 +30,8 @@ public class CarController implements IObserver{
     // A list of cars, modify if needed
     ArrayList<Car> cars = new ArrayList<>();
     ArrayList<Garage<Volvo240>> garages = new ArrayList<>();
+    private ArrayList<IObserver> observers = new ArrayList<>();
+
 
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -42,6 +44,11 @@ public class CarController implements IObserver{
         CarController cc = new CarController();
 
         double startY = 0;
+
+        IObserver observer = new CarView("CarSim 1.0", cc);
+
+        cc.addObserver(observer);
+
 
         Volvo240 volvo = new Volvo240();
         volvo.setXYPos(0, startY);
@@ -63,17 +70,35 @@ public class CarController implements IObserver{
 
 
         // Start a new view and send a reference of self
-        cc.frame = new CarView("CarSim 1.0", cc);
+        cc.frame = (CarView)observer;
 
         // Start the timer
         cc.timer.start();
 
     }
 
-    public void Update(){
-        
+    public void addObserver(IObserver observer){
+        if(!observers.contains(observer)) {
+            observers.add(observer);
+        } else {
+            throw new IllegalStateException("Observer already exists");
+        }
     }
 
+    public void removeObserver(IObserver observer){
+        if (observers.contains(observer)) {
+            int observerindex = observers.indexOf(observer);
+            observers.remove(observerindex);
+        } else {
+            throw new IllegalStateException("Observer does not exist");
+        }
+    }
+
+    public void notifyObserver(){
+        for (IObserver observer : observers) {
+            observer.Update();
+        }
+    }
 
 
     /* Each step the TimerListener moves all the cars in the list and tells the
@@ -105,7 +130,7 @@ public class CarController implements IObserver{
 
 
                 // repaint() calls the paintComponent method of the panel
-                frame.drawPanel.repaint();
+                notifyObserver();
             }
         }
     }

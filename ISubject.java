@@ -1,5 +1,5 @@
 public interface ISubject {
-    void addObserver();
-    void removeObserver();
+    void addObserver(IObserver observer);
+    void removeObserver(IObserver observer);
     void notifyObserver();
 }
