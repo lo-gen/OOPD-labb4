@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * This class represents the full view of the MVC pattern of your car simulator.
@@ -18,7 +19,6 @@ public class CarView extends JFrame implements IObserver{
     private static final int X = 800;
     private static final int Y = 800;
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-
 
     // The controller member
     CarController carC;
@@ -193,6 +193,14 @@ public class CarView extends JFrame implements IObserver{
             @Override
             public void actionPerformed(ActionEvent e) {
                 carC.addCar();
+            }
+        });
+
+        removeCarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                drawPanel.removeACar(carC.cars.getLast());
+                carC.removeCar();
             }
         });
 

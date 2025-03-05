@@ -16,6 +16,7 @@ public class DrawPanel extends JPanel{
 
     private HashMap<Car, Point> carPositions = new HashMap<>();
     private HashMap<Garage<Volvo240>, Point>  garagePositions = new HashMap<>();
+    ArrayList<Car> removeable = new ArrayList<>();
 
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -63,7 +64,9 @@ public class DrawPanel extends JPanel{
         }
     }
 
-
+    void removeACar(Car car) {
+        removeable.add(car);
+    }
 
     // TODO: Make this general for all cars
     void moveit(int x, int y, Car car) {
@@ -109,6 +112,9 @@ public class DrawPanel extends JPanel{
         super.paintComponent(g);
 
 
+        for (Garage<Volvo240> garage : garagePositions.keySet()) {
+            g.drawImage(volvoWorkshopImage, (int) garage.getXPos(), (int) garage.getYPos(), null);
+        }
         ArrayList<Car> carsToRemove = new ArrayList<>();
 
         for (Car car : carPositions.keySet()) {
@@ -121,14 +127,18 @@ public class DrawPanel extends JPanel{
                         carsToRemove.add(car);
                         car.stopEngine();
                     }
-                    g.drawImage(volvoWorkshopImage, (int) garage.getXPos(), (int) garage.getYPos(), null);
-                    // Inte klar ännu
+
 
                 }
             }
+            if (removeable.contains(car)) {
+                carsToRemove.add(car);
+            }
+
             if (!carsToRemove.contains(car) && carImage != null) {
                 g.drawImage(carImage, carPos.x, carPos.y, null);
             }
+
         }
         for (Car car : carsToRemove) {
             carPositions.remove(car);

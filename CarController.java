@@ -106,6 +106,8 @@ public class CarController implements ISubject{
     * */
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            System.out.println(cars);
+            System.out.println(garages);
             notifyObserver();
 
                 /*
@@ -191,9 +193,22 @@ public class CarController implements ISubject{
     }
 
     void addCar() {
-        //Car car = (AFactory.addCar);
-        //cars.add(car);
+        if (cars.size() < 10) {
+            Car car = AFactory.addCar();
+            car.setXYPos(0, 400); //ändra x och ypos till ett random värde inom dimensionerna av skärmen (dim).
+            cars.add(car);
+        } else {
+            throw new IllegalStateException("Kan inte skapa mer än 10 bilar");
+        }
 
+    }
+
+    void removeCar() {
+        if(!cars.isEmpty()){
+            cars.removeLast();
+    } else {
+            throw new IllegalStateException("Finns inga bilar att ta bort");
+        }
     }
 
 }
