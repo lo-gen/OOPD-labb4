@@ -20,10 +20,10 @@ public class CarController implements ISubject{
     Car Scania1 = new Scania();
 
     // The delay (ms) corresponds to 20 updates a sec (hz)
-    private final int delay = 50;
+    public final int delay = 50;
     // The timer is started with a listener (see below) that executes the statements
     // each step between delays.
-    private Timer timer = new Timer(delay, new TimerListener());
+    public Timer timer = new Timer(delay, new TimerListener());
 
     // The frame that represents this instance View of the MVC pattern
     CarView frame;
@@ -38,7 +38,7 @@ public class CarController implements ISubject{
 
 
     //methods:
-
+/*
     public static void main(String[] args) {
         // Instance of this class
         CarController cc = new CarController();
@@ -76,7 +76,7 @@ public class CarController implements ISubject{
         cc.timer.start();
 
     }
-
+*/
     public void addObserver(IObserver observer){
         if(!observers.contains(observer)) {
             observers.add(observer);
@@ -188,6 +188,12 @@ public class CarController implements ISubject{
                 ((Truck) car).rampDown();
             }
         }
+    }
+
+    void addCar() {
+        //Car car = (AFactory.addCar);
+        //cars.add(car);
+
     }
 
 }
