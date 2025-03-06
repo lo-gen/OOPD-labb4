@@ -18,8 +18,7 @@ public class AFactory<carTYpe extends ICar> {
                 return new Volvo240();
         }
     }
-    public void removeCar() {
 
-    }
+
 
 }

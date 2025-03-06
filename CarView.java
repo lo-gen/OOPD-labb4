@@ -21,7 +21,7 @@ public class CarView extends JFrame implements IObserver{
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
     // The controller member
-    CarController carC;
+    CarModel carM;
 
     DrawPanel drawPanel = new DrawPanel(X, Y-240);
 
@@ -45,14 +45,14 @@ public class CarView extends JFrame implements IObserver{
     JButton stopButton = new JButton("Stop all cars");
 
     // Constructor
-    public CarView(String framename, CarController cc) {
-        this.carC = cc;
+    public CarView(String framename, CarModel cm) {
+        this.carM = cm;
         initComponents(framename);
     }
 
 
     public void Update() {
-        for (Car car : carC.cars){
+        for (Car car : carM.cars){
             car.move();
             int x = (int) car.getXPos();
             int y = (int) car.getYPos();
@@ -64,7 +64,7 @@ public class CarView extends JFrame implements IObserver{
             if (0 > y || y >= dim.height / 2 - 50) {
                 car.setAngle(Math.atan2(-Math.sin(car.getAngle()), Math.cos(car.getAngle())));
             }
-            for (Garage<Volvo240> garage : carC.garages) {
+            for (Garage<Volvo240> garage : carM.garages) {
                 drawPanel.addGarage(garage, (int) garage.getXPos(), (int) (garage.getYPos()));
             }
 
@@ -134,7 +134,7 @@ public class CarView extends JFrame implements IObserver{
         gasButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    carC.gas(gasAmount);
+                    carM.gas(gasAmount);
                 }
 
         });
@@ -142,14 +142,14 @@ public class CarView extends JFrame implements IObserver{
         brakeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                carC.brake(gasAmount);
+                carM.brake(gasAmount);
             }
         });
 
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    carC.startEngine();
+                    carM.startEngine();
                 }
 
         });
@@ -157,50 +157,50 @@ public class CarView extends JFrame implements IObserver{
         stopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                carC.stopEngine();
+                carM.stopEngine();
             }
         });
 
         turboOffButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                carC.setTurboOff();
+                carM.setTurboOff();
             }
         });
 
         turboOnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                carC.setTurboOn();
+                carM.setTurboOn();
             }
         });
 
         liftBedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                carC.rampUp();
+                carM.rampUp();
             }
         });
 
         lowerBedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                carC.rampDown();
+                carM.rampDown();
             }
         });
 
         addCarbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                carC.addCar();
+                carM.addCar();
             }
         });
 
         removeCarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                drawPanel.removeACar(carC.cars.getLast());
-                carC.removeCar();
+                drawPanel.removeACar(carM.cars.getLast());
+                carM.removeCar();
             }
         });
 

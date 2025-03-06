@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 /*
 * This class represents the Controller part in the MVC pattern.
@@ -10,15 +11,15 @@ import java.util.ArrayList;
 * modifying the model state and the updating the view.
  */
 
-public class CarController implements ISubject{
+public class CarController {
     // member fields:
 
-    Car volvo1 = new Volvo240();
+    /*Car volvo1 = new Volvo240();
 
     Car Saab1 = new Saab95();
 
     Car Scania1 = new Scania();
-
+    */
     // The delay (ms) corresponds to 20 updates a sec (hz)
     public final int delay = 50;
     // The timer is started with a listener (see below) that executes the statements
@@ -26,14 +27,8 @@ public class CarController implements ISubject{
     public Timer timer = new Timer(delay, new TimerListener());
 
     // The frame that represents this instance View of the MVC pattern
-    CarView frame;
     // A list of cars, modify if needed
-    ArrayList<Car> cars = new ArrayList<>();
-    ArrayList<Garage<Volvo240>> garages = new ArrayList<>();
-    private ArrayList<IObserver> observers = new ArrayList<>();
 
-
-    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
 
 
@@ -77,28 +72,7 @@ public class CarController implements ISubject{
 
     }
 */
-    public void addObserver(IObserver observer){
-        if(!observers.contains(observer)) {
-            observers.add(observer);
-        } else {
-            throw new IllegalStateException("Observer already exists");
-        }
-    }
 
-    public void removeObserver(IObserver observer){
-        if (observers.contains(observer)) {
-            int observerindex = observers.indexOf(observer);
-            observers.remove(observerindex);
-        } else {
-            throw new IllegalStateException("Observer does not exist");
-        }
-    }
-
-    public void notifyObserver(){
-        for (IObserver observer : observers) {
-            observer.Update();
-        }
-    }
 
 
     /* Each step the TimerListener moves all the cars in the list and tells the
@@ -106,8 +80,6 @@ public class CarController implements ISubject{
     * */
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            System.out.println(cars);
-            System.out.println(garages);
             notifyObserver();
 
                 /*
@@ -134,81 +106,6 @@ public class CarController implements ISubject{
         }
     }
 
-    // Calls the gas method for each car once
-    void gas(int amount) {
-        double gas = ((double) amount) / 100;
-        for (Car car : cars) {
-            car.gas(gas);
-        }
-    }
 
-    void brake(int amount) {
-        double brake = ((double) amount) / 100;
-        for (Car car : cars) {
-            car.brake(brake);
-        }
-    }
-
-    void startEngine() {
-        for (Car car : cars) {
-            car.startEngine();
-        }
-    }
-
-    void stopEngine() {
-        for (Car car : cars) {
-            car.stopEngine();
-        }
-    }
-
-    void setTurboOff() {
-        for (Car car : cars) {
-            if (car instanceof Saab95){
-                ((Saab95) car).setTurboOff();
-        }}
-    }
-
-    void setTurboOn() {
-        for (Car car : cars) {
-            if (car instanceof Saab95) {
-                ((Saab95) car).setTurboOn();
-            }
-        }
-    }
-
-    void rampUp() {
-        for (Car car : cars) {
-            if (car instanceof Truck){
-                ((Truck) car).rampUp();
-            }
-        }
-    }
-
-    void rampDown() {
-        for (Car car : cars) {
-            if (car instanceof Truck) {
-                ((Truck) car).rampDown();
-            }
-        }
-    }
-
-    void addCar() {
-        if (cars.size() < 10) {
-            Car car = AFactory.addCar();
-            car.setXYPos(0, 400); //ändra x och ypos till ett random värde inom dimensionerna av skärmen (dim).
-            cars.add(car);
-        } else {
-            throw new IllegalStateException("Kan inte skapa mer än 10 bilar");
-        }
-
-    }
-
-    void removeCar() {
-        if(!cars.isEmpty()){
-            cars.removeLast();
-    } else {
-            throw new IllegalStateException("Finns inga bilar att ta bort");
-        }
-    }
 
 }

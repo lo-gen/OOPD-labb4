@@ -18,7 +18,6 @@ public class DrawPanel extends JPanel{
     private HashMap<Garage<Volvo240>, Point>  garagePositions = new HashMap<>();
     ArrayList<Car> removeable = new ArrayList<>();
 
-    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
     BufferedImage volvoImage;
     BufferedImage saabImage;
