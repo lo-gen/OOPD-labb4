@@ -10,18 +10,17 @@ import java.util.List;
 
 // This panel represents the animated part of the view with the car images.
 
-public class DrawPanel extends JPanel{
+public class DrawPanel extends JPanel {
 
     // Just a single image, TODO: Generalize
 
-    private HashMap<Car, Point> carPositions = new HashMap<>();
-    private HashMap<Garage<Volvo240>, Point>  garagePositions = new HashMap<>();
-    ArrayList<Car> removeable = new ArrayList<>();
+    CarModel carM;
 
 
     BufferedImage volvoImage;
     BufferedImage saabImage;
     BufferedImage scaniaImage;
+    BufferedImage volvoWorkshopImage;
 
     BufferedImage getcarImage(Car car) {
         if (car instanceof Volvo240) {
@@ -33,54 +32,15 @@ public class DrawPanel extends JPanel{
         }
         return null;
     }
-    /*
-    BufferedImage getCarImage(Car car){
-        switch(car instanceof ) {
-            case x:
-                // code block
-                break;
-            case y:
-                // code block
-                break;
-            default:
-                // code block
-        }
-    }
-    */
-
 
     // To keep track of a single car's position
 
-
-    BufferedImage volvoWorkshopImage;
-
-
-    void addGarage(Garage<Volvo240> garage, int x, int y) {
-        if (garagePositions.containsKey(garage)) {
-            garagePositions.get(garage);
-        } else {
-            garagePositions.put(garage, new Point(x, y));
-        }
-    }
-
-    void removeACar(Car car) {
-        removeable.add(car);
-    }
-
-    // TODO: Make this general for all cars
-    void moveit(int x, int y, Car car) {
-        if (carPositions.containsKey(car)) {
-            carPositions.get(car).setLocation(x, y);
-        } else {
-            carPositions.put(car, new Point(x, y));
-        }
-    }
-
     // Initializes the panel and reads the images
-    public DrawPanel(int x, int y) {
+    public DrawPanel(int x, int y, CarModel cm) {
         this.setDoubleBuffered(true);
         this.setPreferredSize(new Dimension(x, y));
         this.setBackground(Color.cyan);
+        this.carM = cm;
         // Print an error message in case file is not found with a try/catch block
         try {
             // You can remove the "pics" part if running outside of IntelliJ and
@@ -94,11 +54,10 @@ public class DrawPanel extends JPanel{
             saabImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Saab95.jpg"));
             scaniaImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Scania.jpg"));
 
-           // allImages = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/*.jpg"));
+            // allImages = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/*.jpg"));
 
 
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
 
@@ -111,38 +70,21 @@ public class DrawPanel extends JPanel{
         super.paintComponent(g);
 
 
-        for (Garage<Volvo240> garage : garagePositions.keySet()) {
+        for (Garage<Volvo240> garage : carM.garagePositions.keySet()) {
             g.drawImage(volvoWorkshopImage, (int) garage.getXPos(), (int) garage.getYPos(), null);
-        }
-        ArrayList<Car> carsToRemove = new ArrayList<>();
-
-        for (Car car : carPositions.keySet()) {
-            Point carPos = carPositions.get(car);
-            BufferedImage carImage = getcarImage(car);
-            if (car instanceof Volvo240) {
-                for (Garage<Volvo240> garage : garagePositions.keySet()) {
-                    if (Math.abs(garage.getXPos() - car.getXPos()) < 10 && Math.abs(garage.getYPos() - car.getYPos()) < 10) {
-                        garage.addCar((Volvo240) car);
-                        carsToRemove.add(car);
-                        car.stopEngine();
-                    }
 
 
+            for (Car car : carM.carPositions.keySet()) {
+                Point carPos = carM.carPositions.get(car);
+                BufferedImage carImage = getcarImage(car);
+
+
+                if (carImage != null) {
+                    g.drawImage(carImage, carPos.x, carPos.y, null);
                 }
-            }
-            if (removeable.contains(car)) {
-                carsToRemove.add(car);
-            }
 
-            if (!carsToRemove.contains(car) && carImage != null) {
-                g.drawImage(carImage, carPos.x, carPos.y, null);
             }
 
         }
-        for (Car car : carsToRemove) {
-            carPositions.remove(car);
-            }
-
-        }
-
+    }
 }

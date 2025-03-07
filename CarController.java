@@ -21,10 +21,7 @@ public class CarController {
     Car Scania1 = new Scania();
     */
     // The delay (ms) corresponds to 20 updates a sec (hz)
-    public final int delay = 50;
-    // The timer is started with a listener (see below) that executes the statements
-    // each step between delays.
-    public Timer timer = new Timer(delay, new TimerListener());
+
 
     // The frame that represents this instance View of the MVC pattern
     // A list of cars, modify if needed
@@ -78,9 +75,7 @@ public class CarController {
     /* Each step the TimerListener moves all the cars in the list and tells the
     * view to update its images. Change this method to your needs.
     * */
-    private class TimerListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            notifyObserver();
+
 
                 /*
                 if(0 > x || x >= dim.width/2 -80) {
@@ -104,8 +99,8 @@ public class CarController {
 
             }*/
         }
-    }
 
 
 
-}
+
+

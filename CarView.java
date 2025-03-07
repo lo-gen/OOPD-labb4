@@ -23,7 +23,7 @@ public class CarView extends JFrame implements IObserver{
     // The controller member
     CarModel carM;
 
-    DrawPanel drawPanel = new DrawPanel(X, Y-240);
+    DrawPanel drawPanel;
 
     JPanel controlPanel = new JPanel();
 
@@ -45,33 +45,21 @@ public class CarView extends JFrame implements IObserver{
     JButton stopButton = new JButton("Stop all cars");
 
     // Constructor
-    public CarView(String framename, CarModel cm) {
+    public CarView(String framename, CarModel cm, DrawPanel dpanel) {
+        this.drawPanel = dpanel;
         this.carM = cm;
         initComponents(framename);
     }
 
 
     public void Update() {
-        for (Car car : carM.cars){
-            car.move();
-            int x = (int) car.getXPos();
-            int y = (int) car.getYPos();
-
-            if(0 > x || x >= dim.width/2 -80) {
-                car.setAngle(car.getAngle() + Math.PI);
-            }
-
-            if (0 > y || y >= dim.height / 2 - 50) {
-                car.setAngle(Math.atan2(-Math.sin(car.getAngle()), Math.cos(car.getAngle())));
-            }
-            for (Garage<Volvo240> garage : carM.garages) {
-                drawPanel.addGarage(garage, (int) garage.getXPos(), (int) (garage.getYPos()));
-            }
-
-            drawPanel.moveit(x, y, car);
-        }
+        carM.moveAllCars();
         drawPanel.repaint();
     }
+
+
+
+
 
     // Sets everything in place and fits everything
     // TODO: Take a good look and make sure you understand how these methods and components work
@@ -199,7 +187,7 @@ public class CarView extends JFrame implements IObserver{
         removeCarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                drawPanel.removeACar(carM.cars.getLast());
+                carM.removeACar(carM.cars.getLast());
                 carM.removeCar();
             }
         });

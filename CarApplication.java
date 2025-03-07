@@ -10,7 +10,9 @@ public class CarApplication {
 
         CarModel cm = new CarModel();
 
-        CarView cv = new CarView("CarSim 1.0", cm);
+        DrawPanel drawPanel = new DrawPanel(800, 560, cm);
+
+        CarView cv = new CarView("CarSim 1.0", cm, drawPanel);
 
         cm.addObserver(cv);
 
@@ -29,7 +31,11 @@ public class CarApplication {
         cm.cars.add(scania);
 
         Garage<Volvo240> volvoWorkshop = new Garage<>(10, 300, 0);
+        cm.addGarage(volvoWorkshop, 300, 0);
         cm.garages.add(volvoWorkshop);
+
+
+        
 
 
 
@@ -39,6 +45,6 @@ public class CarApplication {
         //cv.frame;
 
         // Start the timer
-        cc.timer.start();
+        cm.timer.start();
     }
 }

@@ -1,4 +1,8 @@
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -10,6 +14,35 @@ public class CarModel implements ISubject{
     ArrayList<Garage<Volvo240>> garages = new ArrayList<>();
     private ArrayList<IObserver> observers = new ArrayList<>();
     private static final Random random = new Random();
+
+    public HashMap<Car, Point> carPositions = new HashMap<>();
+    public HashMap<Garage<Volvo240>, Point>  garagePositions = new HashMap<>();
+    ArrayList<Car> removeable = new ArrayList<>();
+
+    public final int delay = 50;
+    public Timer timer = new Timer(delay, new TimerListener());
+
+
+    void addGarage(Garage<Volvo240> garage, int x, int y) {
+        if (garagePositions.containsKey(garage)) {
+            garagePositions.get(garage);
+        } else {
+            garagePositions.put(garage, new Point(x, y));
+        }
+    }
+
+    void removeACar(Car car) {
+        carPositions.remove(car);
+    }
+
+    // TODO: Make this general for all cars
+    void moveit(Car car) {
+        if (carPositions.containsKey(car)) {
+            carPositions.get(car).setLocation(car.getXPos(), car.getYPos());
+        } else {
+            carPositions.put(car, new Point((int)car.getXPos(), (int)car.getYPos()));
+        }
+    }
 
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -50,8 +83,21 @@ public class CarModel implements ISubject{
                 car.setAngle(Math.atan2(-Math.sin(car.getAngle()), Math.cos(car.getAngle())));
             }
 
+            moveit(car);
+
+            if (car instanceof Volvo240) {
+                for (Garage<Volvo240> garage : garagePositions.keySet()) {
+                    if (Math.abs(garage.getXPos() - car.getXPos()) < 50 && Math.abs(garage.getYPos() - car.getYPos()) < 50) {
+                        garage.addCar((Volvo240) car);
+                        carPositions.remove(car);
+                        car.stopEngine();
+                    }
+
+
+                }
+            }
+
         }
-        notifyObserver();
     }
 
     void gas(int amount) {
@@ -127,6 +173,12 @@ public class CarModel implements ISubject{
             cars.removeLast();
         } else {
             throw new IllegalStateException("Finns inga bilar att ta bort");
+        }
+    }
+
+    private class TimerListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            notifyObserver();
         }
     }
 }

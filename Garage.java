@@ -32,7 +32,7 @@ public class Garage<carType extends ICar> {
     }
 
     protected void addCar(carType car) {
-        if (10 < distanceBetween(car)) {
+        if (500 < distanceBetween(car)) {
             throw new IllegalStateException("Car is too far away");
         } else {
             myGarage.addItem(car);
